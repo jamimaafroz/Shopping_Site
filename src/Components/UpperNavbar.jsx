@@ -7,6 +7,7 @@ import {
   MdOutlineLogin,
 } from "react-icons/md";
 import { FaFacebookF, FaInstagram, FaTwitter } from "react-icons/fa";
+import Link from "next/link";
 
 export default function UpperNavbar() {
   const [socialOpen, setSocialOpen] = useState(false);
@@ -34,7 +35,9 @@ export default function UpperNavbar() {
         <div className="flex flex-col sm:flex-row items-start lg:items-center gap-2 w-full lg:w-auto mt-2 lg:mt-0">
           <div className="flex items-center gap-1 text-sm">
             <MdOutlineLogin />
-            <span className="font-semibold">Login</span>
+            <Link href="/login" className="hover:underline">
+              <span className="font-semibold">Login</span>
+            </Link>
           </div>
 
           {/* Socials */}

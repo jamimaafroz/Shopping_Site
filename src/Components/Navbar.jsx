@@ -11,6 +11,7 @@ import {
 import { IoSearch } from "react-icons/io5";
 import { BsCart } from "react-icons/bs";
 import { HiOutlineMenu } from "react-icons/hi";
+import Link from "next/link";
 
 export default function Navbar() {
   const categories = (
@@ -69,9 +70,11 @@ export default function Navbar() {
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1 gap-4">
           <li>
-            <p className="text-black hover:text-green-400 cursor-pointer transition">
-              Home
-            </p>
+            <Link href="/">
+              <p className="text-black hover:text-green-400 cursor-pointer transition">
+                Home
+              </p>
+            </Link>
           </li>
           <li>
             <p className="text-black hover:text-green-400 cursor-pointer transition">
