@@ -1,6 +1,10 @@
 import React from "react";
-import UpperNavbar from "./UpperNavbar";
+import Banner from "./Banner/Banner";
 
 export default function HomePage() {
-  return <div></div>;
+  return (
+    <div>
+      <Banner />
+    </div>
+  );
 }
