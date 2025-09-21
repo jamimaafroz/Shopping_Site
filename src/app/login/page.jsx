@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import { signIn } from "next-auth/react";
+import Link from "next/link";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -20,7 +21,7 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-green-100 to-green-200  px-4">
       {/* Login Card */}
       <div className="bg-white shadow-lg rounded-xl w-full max-w-md p-8">
         <h1 className="text-3xl font-bold text-center mb-6 text-gray-800">
@@ -80,9 +81,9 @@ const LoginPage = () => {
           <a href="#" className="hover:text-green-500 transition">
             Forgot Password?
           </a>
-          <a href="#" className="hover:text-green-500 transition">
-            Sign Up
-          </a>
+          <Link href="/Register">
+            <p className="hover:text-green-500 transition">Sign Up</p>
+          </Link>
         </div>
       </div>
     </div>
