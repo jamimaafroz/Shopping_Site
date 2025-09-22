@@ -1,25 +1,53 @@
 "use client";
+import { RegisterUser } from "@/actions/auth/RegisterUser";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export default function RegisterPage() {
-  const [form, setForm] = useState({ email: "", password: "" });
+  const [form, setForm] = useState({ email: "", password: "", name: "" });
+  const router = useRouter();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // Call your register API here
-    console.log(form);
+    const { name, email, password } = form;
+    const res = await RegisterUser({ name, email, password });
+    if (res?.success) {
+      const signInRes = await signIn("credentials", {
+        email,
+        password,
+        redirect: false,
+      });
+      if (signInRes?.ok) router.push("/");
+      else alert("Signup failed. Try again.");
+    }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-green-100 to-green-200 p-4">
-      <div className="bg-white shadow-2xl rounded-3xl w-full max-w-md p-8">
-        <h1 className="text-3xl font-bold text-gray-800 text-center mb-6">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-green-100 to-green-200 dark:from-gray-900 dark:to-gray-800 p-4">
+      <div className="bg-white dark:bg-gray-900 shadow-2xl rounded-3xl w-full max-w-md p-8 sm:p-6">
+        <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-100 text-center mb-6">
           Sign Up
         </h1>
         <form onSubmit={handleSubmit} className="space-y-5">
+          {/* Name */}
+          <div>
+            <label className="block text-gray-600 dark:text-gray-300 font-medium mb-2">
+              Username
+            </label>
+            <input
+              type="text"
+              placeholder="Enter your username"
+              value={form.name}
+              onChange={(e) => setForm({ ...form, name: e.target.value })}
+              className="w-full px-5 py-3 border border-gray-300 dark:border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-400 dark:focus:ring-green-500 focus:border-green-400 dark:focus:border-green-500 transition shadow-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+              required
+            />
+          </div>
+
           {/* Email */}
           <div>
-            <label className="block text-gray-600 font-medium mb-2">
+            <label className="block text-gray-600 dark:text-gray-300 font-medium mb-2">
               Email
             </label>
             <input
@@ -27,14 +55,14 @@ export default function RegisterPage() {
               placeholder="Enter your email"
               value={form.email}
               onChange={(e) => setForm({ ...form, email: e.target.value })}
-              className="w-full px-5 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-green-400 transition shadow-sm"
+              className="w-full px-5 py-3 border border-gray-300 dark:border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-400 dark:focus:ring-green-500 focus:border-green-400 dark:focus:border-green-500 transition shadow-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
               required
             />
           </div>
 
           {/* Password */}
           <div>
-            <label className="block text-gray-600 font-medium mb-2">
+            <label className="block text-gray-600 dark:text-gray-300 font-medium mb-2">
               Password
             </label>
             <input
@@ -42,7 +70,7 @@ export default function RegisterPage() {
               placeholder="Enter your password"
               value={form.password}
               onChange={(e) => setForm({ ...form, password: e.target.value })}
-              className="w-full px-5 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-green-400 transition shadow-sm"
+              className="w-full px-5 py-3 border border-gray-300 dark:border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-400 dark:focus:ring-green-500 focus:border-green-400 dark:focus:border-green-500 transition shadow-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
               required
             />
           </div>
@@ -51,7 +79,7 @@ export default function RegisterPage() {
           <div className="text-right">
             <a
               href="#"
-              className="text-green-500 hover:text-green-600 text-sm transition"
+              className="text-green-500 dark:text-green-400 hover:text-green-600 dark:hover:text-green-500 text-sm transition"
             >
               Forgot password?
             </a>
@@ -60,18 +88,18 @@ export default function RegisterPage() {
           {/* Submit button */}
           <button
             type="submit"
-            className="w-full bg-green-500 hover:bg-green-600 text-white font-semibold py-3 rounded-xl shadow-lg transition-all transform hover:scale-105"
+            className="w-full bg-green-500 dark:bg-green-600 hover:bg-green-600 dark:hover:bg-green-700 text-white font-semibold py-3 rounded-xl shadow-lg transition-all transform hover:scale-105"
           >
             Register
           </button>
         </form>
 
         {/* Already have account */}
-        <p className="text-center text-gray-500 mt-5">
+        <p className="text-center text-gray-500 dark:text-gray-400 mt-5">
           Already have an account?{" "}
           <a
             href="/login"
-            className="text-green-500 hover:text-green-600 font-medium"
+            className="text-green-500 dark:text-green-400 hover:text-green-600 dark:hover:text-green-500 font-medium"
           >
             Login
           </a>

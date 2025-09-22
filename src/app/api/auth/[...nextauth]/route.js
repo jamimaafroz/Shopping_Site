@@ -1,12 +1,12 @@
+// app/api/auth/[...nextauth]/route.js
+import dbConnect, { collectionObj } from "@/lib/dbConnect";
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 
-export const { handlers, signIn, signOut, auth } = NextAuth({
+const handler = NextAuth({
   providers: [
     CredentialsProvider({
       name: "Credentials",
-      // e.g. domain, username, password, 2FA token, etc.
-      // You can pass any HTML attribute to the <input> tag through the object.
       credentials: {
         email: {
           label: "Email",
@@ -15,16 +15,36 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         },
         password: { label: "Password", type: "password" },
       },
-      async authorize(credentials, req) {
-        // const user = { id: "1", name: "J Smith", email: "jsmith@example.com" };
+      async authorize(credentials) {
         const { email, password } = credentials;
+        if (!email || !password) return null;
 
-        if (user) {
-          return user;
-        } else {
-          return null;
-        }
+        const usersCollection = await dbConnect(collectionObj.userCollection);
+
+        const user = await usersCollection.findOne({ email });
+        if (!user) return null;
+
+        if (password !== user.password) return null;
+
+        return {
+          id: user._id.toString(),
+          name: user.name,
+          email: user.email,
+        };
       },
     }),
   ],
+  session: { strategy: "jwt" },
+  callbacks: {
+    async jwt({ user, token }) {
+      if (user) token.user = user;
+      return token;
+    },
+    async session({ session, token }) {
+      if (token?.user) session.user = token.user;
+      return session;
+    },
+  },
 });
+
+export { handler as GET, handler as POST };
