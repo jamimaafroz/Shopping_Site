@@ -9,11 +9,11 @@ import {
 import { FaFacebookF, FaInstagram, FaTwitter } from "react-icons/fa";
 import Link from "next/link";
 
-export default function UpperNavbar() {
+export default function UpperNavbar({ className = "" }) {
   const [socialOpen, setSocialOpen] = useState(false);
 
   return (
-    <div className="bg-green-500 text-white">
+    <div className={`bg-green-500 text-white ${className}`}>
       <div className="max-w-7xl mx-auto flex flex-col lg:flex-row justify-between items-start lg:items-center px-4 md:px-8 py-2 gap-2 lg:gap-0">
         {/* Row 1: Contact Info */}
         <div className="flex flex-wrap gap-4 w-full lg:w-auto">

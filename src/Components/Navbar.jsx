@@ -7,6 +7,9 @@ import {
   FaTshirt,
   FaRegHeart,
   FaShoppingCart,
+  FaUser,
+  FaPlus,
+  FaHome,
 } from "react-icons/fa";
 import { IoSearch } from "react-icons/io5";
 import { BsCart } from "react-icons/bs";
@@ -36,11 +39,44 @@ export default function Navbar() {
 
   const mobileLinks = (
     <>
+      {/* Home */}
+      <li>
+        <Link
+          href="/"
+          className="flex items-center gap-2 text-black hover:text-green-400 transition"
+        >
+          <FaHome className="text-black" /> Home
+        </Link>
+      </li>
+
+      {/* Add Product */}
+      <li>
+        <Link
+          href="/addProducts"
+          className="flex items-center gap-2 text-black hover:text-green-400 transition"
+        >
+          <FaPlus className="text-black" /> Add Product
+        </Link>
+      </li>
+
+      {/* Login */}
+      <li>
+        <Link
+          href="/login"
+          className="flex items-center gap-2 text-black hover:text-green-400 transition"
+        >
+          <FaUser className="text-black" /> Login
+        </Link>
+      </li>
+
+      {/* Deals */}
       <li>
         <a className="flex items-center gap-2 text-black hover:text-green-400 transition">
           <FaTags className="text-black" /> Deals
         </a>
       </li>
+
+      {/* Categories */}
       <li tabIndex={0}>
         <a className="flex items-center gap-2 justify-between text-black hover:text-green-400 transition">
           <FaAppleAlt className="text-black" /> Categories
@@ -48,6 +84,8 @@ export default function Navbar() {
         </a>
         <ul className="p-2 bg-white rounded-box shadow">{categories}</ul>
       </li>
+
+      {/* Wishlist */}
       <li>
         <a className="flex items-center gap-2 text-black hover:text-green-400 transition">
           <FaRegHeart className="text-black" /> Wishlist
@@ -77,9 +115,11 @@ export default function Navbar() {
             </Link>
           </li>
           <li>
-            <p className="text-black hover:text-green-400 cursor-pointer transition">
-              Deals
-            </p>
+            <Link href="/addProducts">
+              <p className="text-black hover:text-green-400 cursor-pointer transition">
+                Deals
+              </p>
+            </Link>
           </li>
           <li>
             <details className="relative group">

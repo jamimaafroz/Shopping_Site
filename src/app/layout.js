@@ -26,7 +26,8 @@ export default function RootLayout({ children }) {
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <NextProviderAuth>
-          <UpperNavbar />
+          <UpperNavbar className="hidden md:block" />
+
           <Navbar />
           <main>{children}</main>
         </NextProviderAuth>
