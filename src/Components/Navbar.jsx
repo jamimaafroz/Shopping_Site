@@ -1,4 +1,6 @@
-import React from "react";
+"use client";
+
+import React, { useState, useEffect } from "react";
 import ShopEaseLogo from "./logo";
 import {
   FaTags,
@@ -6,7 +8,6 @@ import {
   FaLaptop,
   FaTshirt,
   FaRegHeart,
-  FaShoppingCart,
   FaUser,
   FaPlus,
   FaHome,
@@ -15,82 +16,84 @@ import { IoSearch } from "react-icons/io5";
 import { BsCart } from "react-icons/bs";
 import { HiOutlineMenu } from "react-icons/hi";
 import Link from "next/link";
+import { useSession, signIn, signOut } from "next-auth/react";
 
 export default function Navbar() {
+  const { data: session } = useSession();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => setMounted(true), []);
+
+  // Categories submenu
   const categories = (
     <>
       <li>
         <a className="flex items-center gap-2 text-black hover:text-green-400 transition">
-          <FaLaptop className="text-black" /> Electronics
+          <FaLaptop /> Electronics
         </a>
       </li>
       <li>
         <a className="flex items-center gap-2 text-black hover:text-green-400 transition">
-          <FaTshirt className="text-black" /> Fashion
+          <FaTshirt /> Fashion
         </a>
       </li>
       <li>
         <a className="flex items-center gap-2 text-black hover:text-green-400 transition">
-          <FaAppleAlt className="text-black" /> Groceries
+          <FaAppleAlt /> Groceries
         </a>
       </li>
     </>
   );
 
+  // Mobile links
   const mobileLinks = (
     <>
-      {/* Home */}
       <li>
         <Link
           href="/"
           className="flex items-center gap-2 text-black hover:text-green-400 transition"
         >
-          <FaHome className="text-black" /> Home
+          <FaHome /> Home
         </Link>
       </li>
-
-      {/* Add Product */}
       <li>
         <Link
           href="/addProducts"
           className="flex items-center gap-2 text-black hover:text-green-400 transition"
         >
-          <FaPlus className="text-black" /> Add Product
+          <FaPlus /> Add Product
         </Link>
       </li>
-
-      {/* Login */}
       <li>
         <Link
-          href="/login"
+          href="/deals"
           className="flex items-center gap-2 text-black hover:text-green-400 transition"
         >
-          <FaUser className="text-black" /> Login
+          <FaTags /> Deals
         </Link>
       </li>
-
-      {/* Deals */}
-      <li>
-        <a className="flex items-center gap-2 text-black hover:text-green-400 transition">
-          <FaTags className="text-black" /> Deals
-        </a>
-      </li>
-
-      {/* Categories */}
       <li tabIndex={0}>
         <a className="flex items-center gap-2 justify-between text-black hover:text-green-400 transition">
-          <FaAppleAlt className="text-black" /> Categories
+          <FaAppleAlt /> Categories
           <span className="ml-2">&#x25BE;</span>
         </a>
         <ul className="p-2 bg-white rounded-box shadow">{categories}</ul>
       </li>
-
-      {/* Wishlist */}
       <li>
         <a className="flex items-center gap-2 text-black hover:text-green-400 transition">
-          <FaRegHeart className="text-black" /> Wishlist
+          <FaRegHeart /> Wishlist
         </a>
       </li>
+      {mounted && session && (
+        <li>
+          <button
+            onClick={() => signOut({ callbackUrl: "/" })}
+            className="flex items-center gap-2 text-red-500 hover:text-red-600 transition"
+          >
+            Logout
+          </button>
+        </li>
+      )}
     </>
   );
 
@@ -98,13 +101,12 @@ export default function Navbar() {
     <div className="navbar bg-white shadow-md px-4 md:px-8 justify-between">
       {/* Navbar Start */}
       <div className="flex items-center navbar-start space-x-2 lg:space-x-4">
-        {/* Logo */}
         <div className="w-28 sm:w-32 md:w-36 lg:w-40">
           <ShopEaseLogo />
         </div>
       </div>
 
-      {/* Navbar Center - Desktop Menu */}
+      {/* Navbar Center - Desktop */}
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1 gap-4">
           <li>
@@ -115,38 +117,81 @@ export default function Navbar() {
             </Link>
           </li>
           <li>
-            <Link href="/addProducts">
+            <Link href="/deals">
               <p className="text-black hover:text-green-400 cursor-pointer transition">
                 Deals
               </p>
             </Link>
           </li>
           <li>
-            <details className="relative group">
-              <summary className="flex items-center gap-1 text-black hover:text-green-400 cursor-pointer transition">
-                <FaAppleAlt className="text-black hover:text-green-400" />
-                Categories
-              </summary>
-              <ul className="absolute top-full left-0 mt-2 p-2 bg-white rounded-box shadow-md min-w-[150px]">
+            <Link href="/addProducts">
+              <p className="text-black hover:text-green-400 cursor-pointer transition">
+                Add Product
+              </p>
+            </Link>
+          </li>
+          <li>
+            <div className="dropdown dropdown-hover">
+              <label
+                tabIndex={0}
+                className="flex items-center gap-1 text-black hover:text-green-400 cursor-pointer transition"
+              >
+                <FaAppleAlt /> Categories
+              </label>
+              <ul className="dropdown-content mt-2 p-2 bg-white rounded-box shadow-md min-w-[150px]">
                 {categories}
               </ul>
-            </details>
+            </div>
           </li>
           <li>
             <p className="text-black hover:text-green-400 cursor-pointer transition">
               About Us
             </p>
           </li>
-          <li>
-            <p className="text-black hover:text-green-400 cursor-pointer transition">
-              Account
-            </p>
-          </li>
-          <li>
-            <p className="text-black hover:text-green-400 cursor-pointer transition">
-              Contact Us
-            </p>
-          </li>
+
+          {/* Account Dropdown */}
+          {mounted && session && (
+            <li>
+              <div className="dropdown dropdown-end">
+                <label
+                  tabIndex={0}
+                  role="button"
+                  className=" flex items-center gap-2"
+                >
+                  <FaUser /> {session.user.name}
+                </label>
+                <ul
+                  tabIndex={0}
+                  className="dropdown-content menu bg-base-100 rounded-box z-[50] w-52 p-2 shadow-md"
+                >
+                  <li>
+                    <Link
+                      href="/dashboard"
+                      className="block px-4 py-2 hover:text-green-400"
+                    >
+                      Dashboard
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      href="/profile"
+                      className="block px-4 py-2 hover:text-green-400"
+                    >
+                      Update Profile
+                    </Link>
+                  </li>
+                  <li>
+                    <button
+                      onClick={() => signOut({ callbackUrl: "/" })}
+                      className="block w-full text-left px-4 py-2 text-red-500 hover:text-red-600"
+                    >
+                      Logout
+                    </button>
+                  </li>
+                </ul>
+              </div>
+            </li>
+          )}
         </ul>
       </div>
 
@@ -163,7 +208,7 @@ export default function Navbar() {
           </label>
           <ul
             tabIndex={0}
-            className="menu menu-sm dropdown-content bg-white rounded-box z-50 mt-3 w-56 p-2 shadow-md right-0"
+            className="menu menu-sm dropdown-content bg-white rounded-box z-[50] mt-3 w-56 p-2 shadow-md right-0"
           >
             {mobileLinks}
           </ul>
