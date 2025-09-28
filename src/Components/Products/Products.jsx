@@ -80,9 +80,9 @@ export default function Products() {
               alt={product.name}
               className="w-full h-40 object-cover rounded-md mb-3"
             />
-            <h2 className="text-xl font-semibold">{product.name}</h2>
+            <h2 className="text-xl font-light">{product.name}</h2>
             <p className="text-sm text-gray-400 mb-2">{product.description}</p>
-            <p className="text-green-400 font-bold">${product.price}</p>
+            <p className="text-[#9B563F] font-bold">${product.price}</p>
           </div>
         ))}
       </div>

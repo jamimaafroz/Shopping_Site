@@ -2,10 +2,13 @@
 import React, { useEffect, useState } from "react";
 import { FaRegHeart, FaInfoCircle } from "react-icons/fa";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 
 export default function ProductCards() {
   const [products, setProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const { data: session } = useSession();
+  const userEmail = session?.user?.email;
 
   // Fetch products
   useEffect(() => {
@@ -26,6 +29,38 @@ export default function ProductCards() {
     p.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  // Handle wishlist
+  const handleWishlist = async (productId) => {
+    if (!userEmail || !session.user.id) {
+      alert("Please login to add to wishlist!");
+      return;
+    }
+
+    try {
+      const res = await fetch("/api/wishlist", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          userId: session.user.id,
+          userEmail: userEmail,
+          productId: productId,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        alert("✅ Added to wishlist!");
+        fetchWishlistCount(userEmail);
+      } else {
+        alert(data.error || "Something went wrong!");
+      }
+    } catch (err) {
+      console.error("Error adding to wishlist:", err);
+      alert("Failed to add to wishlist.");
+    }
+  };
+
   return (
     <div className="px-4 md:px-8 py-6">
       <h1 className="text-3xl font-bold mb-6">Products</h1>
@@ -37,7 +72,7 @@ export default function ProductCards() {
           placeholder="Search products..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="w-full md:w-1/2 p-3 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-400"
+          className="w-full md:w-1/2 p-3 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#9B563F]"
         />
       </div>
 
@@ -54,7 +89,7 @@ export default function ProductCards() {
                 alt={product.name}
                 className="w-full h-40 object-cover rounded-md mb-3"
               />
-              <h2 className="text-lg font-semibold">{product.name}</h2>
+              <h2 className="text-lg font-light">{product.name}</h2>
               <p className="text-sm text-gray-500 mb-2 line-clamp-2">
                 {product.description}
               </p>
@@ -71,7 +106,10 @@ export default function ProductCards() {
                 </Link>
 
                 {/* Wishlist Button */}
-                <button className="flex items-center gap-1 text-red-500 hover:text-red-700">
+                <button
+                  onClick={() => handleWishlist(product._id)}
+                  className="flex items-center gap-1 text-red-500 hover:text-red-700"
+                >
                   <FaRegHeart /> Wishlist
                 </button>
               </div>

@@ -4,6 +4,8 @@ export const collectionObj = {
   userCollection: "Users",
   productCollection: "products",
   orderCollection: "orders",
+  wishCollection: "wishlist",
+  cartCollection: "cart",
 };
 
 export default function dbConnect(CollectionName) {

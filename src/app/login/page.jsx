@@ -50,7 +50,7 @@ const LoginPage = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="Enter your email"
-              className="w-full px-4 py-2 bg-gray-700 text-white border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-green-400 transition"
+              className="w-full px-4 py-2 bg-gray-700 text-white border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#9B563F] focus:border-[#9B563F] transition"
               required
             />
           </div>
@@ -69,7 +69,7 @@ const LoginPage = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Enter your password"
-              className="w-full px-4 py-2 bg-gray-700 text-white border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-green-400 transition"
+              className="w-full px-4 py-2 bg-gray-700 text-white border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#9B563F] focus:border-[#9B563F] transition"
               required
             />
           </div>
@@ -77,7 +77,7 @@ const LoginPage = () => {
           {/* Login Button */}
           <button
             type="submit"
-            className="w-full bg-green-500 hover:bg-green-600 text-white font-semibold py-2 rounded-lg transition"
+            className="w-full bg-green-500 hover:bg-green-600 text-white font-light py-2 rounded-lg transition"
           >
             Login
           </button>
@@ -85,11 +85,11 @@ const LoginPage = () => {
 
         {/* Additional Links */}
         <div className="mt-4 flex justify-between text-sm text-gray-400">
-          <a href="#" className="hover:text-green-400 transition">
+          <a href="#" className="hover:text-[#9B563F] transition">
             Forgot Password?
           </a>
           <Link href="/Register">
-            <p className="hover:text-green-400 transition cursor-pointer">
+            <p className="hover:text-[#9B563F] transition cursor-pointer">
               Sign Up
             </p>
           </Link>

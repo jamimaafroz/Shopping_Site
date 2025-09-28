@@ -77,7 +77,7 @@ export default function Banner() {
                   damping: 15,
                   duration: 0.6,
                 }}
-                className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-green-400 via-blue-400 to-blue-800 bg-clip-text text-transparent drop-shadow-lg"
+                className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-[#9B563F] via-blue-400 to-blue-800 bg-clip-text text-transparent drop-shadow-lg"
               >
                 {slides[current].title}
               </motion.h1>

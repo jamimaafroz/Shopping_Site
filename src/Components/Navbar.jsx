@@ -28,17 +28,17 @@ export default function Navbar() {
   const categories = (
     <>
       <li>
-        <a className="flex items-center gap-2 text-black hover:text-green-400 transition">
+        <a className="flex items-center gap-2 text-black hover:text-[#9B563F] transition">
           <FaLaptop /> Electronics
         </a>
       </li>
       <li>
-        <a className="flex items-center gap-2 text-black hover:text-green-400 transition">
+        <a className="flex items-center gap-2 text-black hover:text-[#9B563F] transition">
           <FaTshirt /> Fashion
         </a>
       </li>
       <li>
-        <a className="flex items-center gap-2 text-black hover:text-green-400 transition">
+        <a className="flex items-center gap-2 text-black hover:text-[#9B563F] transition">
           <FaAppleAlt /> Groceries
         </a>
       </li>
@@ -51,7 +51,7 @@ export default function Navbar() {
       <li>
         <Link
           href="/"
-          className="flex items-center gap-2 text-black hover:text-green-400 transition"
+          className="flex items-center gap-2 text-black hover:text-[#9B563F] transition"
         >
           <FaHome /> Home
         </Link>
@@ -59,7 +59,7 @@ export default function Navbar() {
       <li>
         <Link
           href="/addProducts"
-          className="flex items-center gap-2 text-black hover:text-green-400 transition"
+          className="flex items-center gap-2 text-black hover:text-[#9B563F] transition"
         >
           <FaPlus /> Add Product
         </Link>
@@ -67,20 +67,20 @@ export default function Navbar() {
       <li>
         <Link
           href="/deals"
-          className="flex items-center gap-2 text-black hover:text-green-400 transition"
+          className="flex items-center gap-2 text-black hover:text-[#9B563F] transition"
         >
           <FaTags /> Deals
         </Link>
       </li>
       <li tabIndex={0}>
-        <a className="flex items-center gap-2 justify-between text-black hover:text-green-400 transition">
+        <a className="flex items-center gap-2 justify-between text-black hover:text-[#9B563F] transition">
           <FaAppleAlt /> Categories
           <span className="ml-2">&#x25BE;</span>
         </a>
         <ul className="p-2 bg-white rounded-box shadow">{categories}</ul>
       </li>
       <li>
-        <a className="flex items-center gap-2 text-black hover:text-green-400 transition">
+        <a className="flex items-center gap-2 text-black hover:text-[#9B563F] transition">
           <FaRegHeart /> Wishlist
         </a>
       </li>
@@ -111,21 +111,21 @@ export default function Navbar() {
         <ul className="menu menu-horizontal px-1 gap-4">
           <li>
             <Link href="/">
-              <p className="text-black hover:text-green-400 cursor-pointer transition">
+              <p className="text-black hover:text-[#9B563F] cursor-pointer transition">
                 Home
               </p>
             </Link>
           </li>
           <li>
             <Link href="/deals">
-              <p className="text-black hover:text-green-400 cursor-pointer transition">
+              <p className="text-black hover:text-[#9B563F] cursor-pointer transition">
                 Deals
               </p>
             </Link>
           </li>
           <li>
             <Link href="/addProducts">
-              <p className="text-black hover:text-green-400 cursor-pointer transition">
+              <p className="text-black hover:text-[#9B563F] cursor-pointer transition">
                 Add Product
               </p>
             </Link>
@@ -134,7 +134,7 @@ export default function Navbar() {
             <div className="dropdown dropdown-hover">
               <label
                 tabIndex={0}
-                className="flex items-center gap-1 text-black hover:text-green-400 cursor-pointer transition"
+                className="flex items-center gap-1 text-black hover:text-[#9B563F] cursor-pointer transition"
               >
                 <FaAppleAlt /> Categories
               </label>
@@ -144,7 +144,7 @@ export default function Navbar() {
             </div>
           </li>
           <li>
-            <p className="text-black hover:text-green-400 cursor-pointer transition">
+            <p className="text-black hover:text-[#9B563F] cursor-pointer transition">
               About Us
             </p>
           </li>
@@ -167,7 +167,7 @@ export default function Navbar() {
                   <li>
                     <Link
                       href="/dashboard"
-                      className="block px-4 py-2 hover:text-green-400"
+                      className="block px-4 py-2 hover:text-[#9B563F]"
                     >
                       Dashboard
                     </Link>
@@ -175,7 +175,7 @@ export default function Navbar() {
                   <li>
                     <Link
                       href="/profile"
-                      className="block px-4 py-2 hover:text-green-400"
+                      className="block px-4 py-2 hover:text-[#9B563F]"
                     >
                       Update Profile
                     </Link>
@@ -197,9 +197,9 @@ export default function Navbar() {
 
       {/* Navbar End */}
       <div className="navbar-end flex items-center gap-4 text-xl md:text-2xl">
-        <IoSearch className="text-green-400 cursor-pointer transition" />
-        <FaRegHeart className="text-green-400 cursor-pointer transition" />
-        <BsCart className="text-green-400 cursor-pointer transition" />
+        <IoSearch className="text-[#9B563F] cursor-pointer transition" />
+        <FaRegHeart className="text-[#9B563F] cursor-pointer transition" />
+        <BsCart className="text-[#9B563F] cursor-pointer transition" />
 
         {/* Mobile Dropdown */}
         <div className="dropdown lg:hidden">

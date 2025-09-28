@@ -40,7 +40,7 @@ export default function RegisterPage() {
               placeholder="Enter your username"
               value={form.name}
               onChange={(e) => setForm({ ...form, name: e.target.value })}
-              className="w-full px-5 py-3 border border-gray-300 dark:border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-400 dark:focus:ring-green-500 focus:border-green-400 dark:focus:border-green-500 transition shadow-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+              className="w-full px-5 py-3 border border-gray-300 dark:border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#9B563F] dark:focus:ring-green-500 focus:border-[#9B563F] dark:focus:border-green-500 transition shadow-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
               required
             />
           </div>
@@ -55,7 +55,7 @@ export default function RegisterPage() {
               placeholder="Enter your email"
               value={form.email}
               onChange={(e) => setForm({ ...form, email: e.target.value })}
-              className="w-full px-5 py-3 border border-gray-300 dark:border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-400 dark:focus:ring-green-500 focus:border-green-400 dark:focus:border-green-500 transition shadow-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+              className="w-full px-5 py-3 border border-gray-300 dark:border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#9B563F] dark:focus:ring-green-500 focus:border-[#9B563F] dark:focus:border-green-500 transition shadow-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
               required
             />
           </div>
@@ -70,7 +70,7 @@ export default function RegisterPage() {
               placeholder="Enter your password"
               value={form.password}
               onChange={(e) => setForm({ ...form, password: e.target.value })}
-              className="w-full px-5 py-3 border border-gray-300 dark:border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-400 dark:focus:ring-green-500 focus:border-green-400 dark:focus:border-green-500 transition shadow-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+              className="w-full px-5 py-3 border border-gray-300 dark:border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#9B563F] dark:focus:ring-green-500 focus:border-[#9B563F] dark:focus:border-green-500 transition shadow-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
               required
             />
           </div>
@@ -79,7 +79,7 @@ export default function RegisterPage() {
           <div className="text-right">
             <a
               href="#"
-              className="text-green-500 dark:text-green-400 hover:text-green-600 dark:hover:text-green-500 text-sm transition"
+              className="text-green-500 dark:text-[#9B563F] hover:text-green-600 dark:hover:text-green-500 text-sm transition"
             >
               Forgot password?
             </a>
@@ -88,7 +88,7 @@ export default function RegisterPage() {
           {/* Submit button */}
           <button
             type="submit"
-            className="w-full bg-green-500 dark:bg-green-600 hover:bg-green-600 dark:hover:bg-green-700 text-white font-semibold py-3 rounded-xl shadow-lg transition-all transform hover:scale-105"
+            className="w-full bg-green-500 dark:bg-green-600 hover:bg-green-600 dark:hover:bg-green-700 text-white font-light py-3 rounded-xl shadow-lg transition-all transform hover:scale-105"
           >
             Register
           </button>
@@ -99,7 +99,7 @@ export default function RegisterPage() {
           Already have an account?{" "}
           <a
             href="/login"
-            className="text-green-500 dark:text-green-400 hover:text-green-600 dark:hover:text-green-500 font-medium"
+            className="text-green-500 dark:text-[#9B563F] hover:text-green-600 dark:hover:text-green-500 font-medium"
           >
             Login
           </a>
