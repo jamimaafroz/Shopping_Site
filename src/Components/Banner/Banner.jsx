@@ -44,71 +44,84 @@ export default function Banner() {
     }, 4000); // change every 4 seconds
     return () => clearInterval(timer);
   }, []);
+  // Container to stagger letters
+  const container = {
+    hidden: { opacity: 1 },
+    visible: {
+      opacity: 1,
+      transition: { staggerChildren: 0.04, delayChildren: 0.1 }, // flowing wave
+    },
+  };
+
+  const letter = {
+    hidden: { opacity: 0, x: 80 }, // start off to the right
+    visible: {
+      opacity: 1,
+      x: 0,
+      transition: {
+        type: "tween",
+        ease: "easeOut",
+        duration: 0.8, // smoother motion
+      },
+    },
+  };
 
   return (
-    <div className="relative w-full h-[500px] overflow-hidden rounded-xl shadow-lg">
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={slides[current].id}
-          initial={{ opacity: 0, x: -100 }}
-          animate={{ opacity: 1, x: 0 }}
-          exit={{ opacity: 0, x: 100 }}
-          transition={{ duration: 0.8 }}
-          className="absolute w-full h-full"
-        >
-          {/* Background Image */}
-          <img
-            src={slides[current].image}
-            alt={slides[current].title}
-            className="w-full h-full object-cover"
-          />
-
-          {/* Overlay with gradient */}
-          <div className="absolute inset-0 bg-gradient-to-r from-black/70 to-transparent flex items-center">
-            <div className="text-left bg-[rgb(255,255,255,0.10)] rounded-2xl p-8 max-w-lg px-10 space-y-4 backdrop-blur-sm">
-              {/* Animated Title */}
-              <motion.h1
-                key={slides[current].title}
-                initial={{ opacity: 0, y: -30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{
-                  type: "spring",
-                  stiffness: 80,
-                  damping: 15,
-                  duration: 0.6,
-                }}
-                className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-[#9B563F] via-blue-400 to-blue-800 bg-clip-text text-transparent drop-shadow-lg"
-              >
-                {slides[current].title}
-              </motion.h1>
-
-              {/* Animated Description */}
-              <motion.p
-                key={slides[current].desc}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2, duration: 0.6 }}
-                className="text-lg md:text-xl drop-shadow-md text-white"
-              >
-                {slides[current].desc}
-              </motion.p>
-
-              {/* Animated Button */}
-              <motion.button
-                key={slides[current].button}
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ type: "spring", stiffness: 120, delay: 0.4 }}
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.95 }}
-                className="px-6 py-3 bg-green-500 text-white rounded-lg shadow-md hover:bg-green-600 transition"
-              >
-                {slides[current].button}
-              </motion.button>
-            </div>
-          </div>
-        </motion.div>
+    <div className="relative w-full h-[500px] overflow-hidden  shadow-lg">
+      <AnimatePresence>
+        <motion.img
+          key={slides[current].image}
+          src={slides[current].image}
+          alt={slides[current].title}
+          initial={{ opacity: 0, scale: 1.05 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 1.05 }}
+          transition={{ duration: 1, ease: "easeInOut" }}
+          className="absolute inset-0 w-full h-full object-cover"
+        />
       </AnimatePresence>
+
+      {/* Overlay */}
+      <div className="absolute inset-0 bg-gradient-to-r from-black/70 to-transparent flex items-center">
+        <div className="ml-44 text-left rounded-2xl p-8 max-w-2xl px-8 space-y-4 backdrop-blur-sm">
+          {/* Animated Title */}
+          <motion.h1
+            key={slides[current].title}
+            variants={container}
+            initial="hidden"
+            animate="visible"
+            className="text-4xl md:text-5xl font-bold bg-gradient-to-r text-black bg-clip-text drop-shadow-lg flex flex-wrap"
+          >
+            {slides[current].title.split("").map((char, i) => (
+              <motion.span key={i} variants={letter}>
+                {char === " " ? "\u00A0" : char}
+              </motion.span>
+            ))}
+          </motion.h1>
+          {/* Animated Description */}
+          <motion.p
+            key={slides[current].desc}
+            initial={{ opacity: 0, y: -30 }}
+            animate={{ opacity: 1, y: -1 }}
+            transition={{ delay: 0.2, duration: 0.8 }}
+            className="text-sm md:text-lg drop-shadow-md text-white"
+          >
+            {slides[current].desc}
+          </motion.p>
+          {/* Button */}
+          <motion.button
+            key={slides[current].button}
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ type: "spring", stiffness: 120, delay: 0.4 }}
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.95 }}
+            className="px-6 py-3 bg-[#9B563F] text-white rounded-lg shadow-md cursor-pointer transition"
+          >
+            {slides[current].button}
+          </motion.button>
+        </div>
+      </div>
     </div>
   );
 }

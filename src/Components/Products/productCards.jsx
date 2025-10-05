@@ -1,35 +1,23 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import { FaRegHeart, FaInfoCircle } from "react-icons/fa";
+import React, { useState } from "react";
 import Link from "next/link";
+import { FaRegHeart, FaInfoCircle } from "react-icons/fa";
 import { useSession } from "next-auth/react";
+import useProducts from "@/hooks/useProducts";
+import Image from "next/image";
 
 export default function ProductCards() {
-  const [products, setProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const { data: session } = useSession();
   const userEmail = session?.user?.email;
 
-  // Fetch products
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const res = await fetch("/api/products");
-        const data = await res.json();
-        setProducts(data);
-      } catch (err) {
-        console.log("Error fetching products:", err);
-      }
-    };
-    fetchProducts();
-  }, []);
+  const { products, loading, error } = useProducts();
 
-  // Filter by search
+  // Filter by search term
   const filteredProducts = products.filter((p) =>
     p.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  // Handle wishlist
   const handleWishlist = async (productId) => {
     if (!userEmail || !session.user.id) {
       alert("Please login to add to wishlist!");
@@ -51,7 +39,7 @@ export default function ProductCards() {
 
       if (res.ok) {
         alert("✅ Added to wishlist!");
-        fetchWishlistCount(userEmail);
+        // optionally update wishlist count here
       } else {
         alert(data.error || "Something went wrong!");
       }
@@ -78,34 +66,47 @@ export default function ProductCards() {
 
       {/* Product Cards Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        {filteredProducts.length > 0 ? (
+        {loading ? (
+          // Skeleton cards while loading
+          Array(8)
+            .fill(0)
+            .map((_, i) => (
+              <div
+                key={i}
+                className="h-60 bg-gray-300 rounded-lg animate-pulse"
+              ></div>
+            ))
+        ) : error ? (
+          <p className="text-red-500">Error: {error.message}</p>
+        ) : filteredProducts.length > 0 ? (
           filteredProducts.map((product) => (
             <div
               key={product._id}
-              className="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition transform hover:scale-105"
+              className="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-transform duration-300 transform hover:scale-105"
             >
-              <img
-                src={product.img}
-                alt={product.name}
-                className="w-full h-40 object-cover rounded-md mb-3"
-              />
+              <div className="relative w-full h-40 mb-3 rounded-md overflow-hidden">
+                <Image
+                  src={product.image}
+                  alt={product.name}
+                  fill
+                  className="object-cover"
+                />
+              </div>
+
               <h2 className="text-lg font-light">{product.name}</h2>
               <p className="text-sm text-gray-500 mb-2 line-clamp-2">
                 {product.description}
               </p>
               <p className="text-green-600 font-bold mb-3">${product.price}</p>
 
-              {/* Icons Row */}
               <div className="flex justify-between items-center">
-                {/* Details Button */}
                 <Link
-                  href={`/products/${product._id}`}
+                  href={`/productDetails/${product._id}`}
                   className="flex items-center gap-1 text-blue-500 hover:text-blue-700"
                 >
                   <FaInfoCircle /> Details
                 </Link>
 
-                {/* Wishlist Button */}
                 <button
                   onClick={() => handleWishlist(product._id)}
                   className="flex items-center gap-1 text-red-500 hover:text-red-700"

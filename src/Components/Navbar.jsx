@@ -16,10 +16,14 @@ import { IoSearch } from "react-icons/io5";
 import { BsCart } from "react-icons/bs";
 import { HiOutlineMenu } from "react-icons/hi";
 import Link from "next/link";
-import { useSession, signIn, signOut } from "next-auth/react";
+import { useSession, signOut } from "next-auth/react";
+import useWishlists from "@/hooks/useWishlists";
 
 export default function Navbar() {
   const { data: session } = useSession();
+  const userEmail = session?.user?.email;
+  const { wishlists, loading } = useWishlists(userEmail);
+
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => setMounted(true), []);
@@ -198,7 +202,15 @@ export default function Navbar() {
       {/* Navbar End */}
       <div className="navbar-end flex items-center gap-4 text-xl md:text-2xl">
         <IoSearch className="text-[#9B563F] cursor-pointer transition" />
-        <FaRegHeart className="text-[#9B563F] cursor-pointer transition" />
+        <div className="relative cursor-pointer">
+          <FaRegHeart className="text-[#9B563F]" />
+          {!loading && wishlists.length > 0 && (
+            <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
+              {wishlists.length}
+            </span>
+          )}
+        </div>
+
         <BsCart className="text-[#9B563F] cursor-pointer transition" />
 
         {/* Mobile Dropdown */}
