@@ -5,6 +5,7 @@ import { FaRegHeart, FaInfoCircle } from "react-icons/fa";
 import { useSession } from "next-auth/react";
 import useProducts from "@/hooks/useProducts";
 import Image from "next/image";
+import toast from "daisyui/components/toast";
 
 export default function ProductCards() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -38,7 +39,7 @@ export default function ProductCards() {
       const data = await res.json();
 
       if (res.ok) {
-        alert("✅ Added to wishlist!");
+        toast.success("✅ Added to wishlist!");
         // optionally update wishlist count here
       } else {
         alert(data.error || "Something went wrong!");

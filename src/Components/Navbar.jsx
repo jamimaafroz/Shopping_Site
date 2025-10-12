@@ -18,11 +18,13 @@ import { HiOutlineMenu } from "react-icons/hi";
 import Link from "next/link";
 import { useSession, signOut } from "next-auth/react";
 import useWishlists from "@/hooks/useWishlists";
+import useCart from "@/hooks/useCart";
 
 export default function Navbar() {
   const { data: session } = useSession();
   const userEmail = session?.user?.email;
   const { wishlists, loading } = useWishlists(userEmail);
+  const { items, loading: cartLoading, count } = useCart(userEmail);
 
   const [mounted, setMounted] = useState(false);
 
@@ -211,7 +213,14 @@ export default function Navbar() {
           )}
         </div>
 
-        <BsCart className="text-[#9B563F] cursor-pointer transition" />
+        <div className="relative cursor-pointer">
+          <BsCart className="text-[#9B563F] cursor-pointer transition" />
+          {!cartLoading && count > 0 && (
+            <span className="absolute -top-2 -right-2 bg-green-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
+              {count}
+            </span>
+          )}
+        </div>
 
         {/* Mobile Dropdown */}
         <div className="dropdown lg:hidden">
