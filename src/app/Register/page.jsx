@@ -12,12 +12,15 @@ export default function RegisterPage() {
     e.preventDefault();
     const { name, email, password } = form;
     const res = await RegisterUser({ name, email, password });
+    console.log("Registration response:", res);
     if (res?.success) {
       const signInRes = await signIn("credentials", {
         email,
         password,
         redirect: false,
       });
+
+      console.log("Sign-in response:", signInRes);
       if (signInRes?.ok) router.push("/");
       else alert("Signup failed. Try again.");
     }

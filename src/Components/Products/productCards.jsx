@@ -40,7 +40,6 @@ export default function ProductCards() {
 
       if (res.ok) {
         toast.success("✅ Added to wishlist!");
-        // optionally update wishlist count here
       } else {
         alert(data.error || "Something went wrong!");
       }

@@ -2,6 +2,7 @@
 import dbConnect, { collectionObj } from "@/lib/dbConnect";
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
+import bcrypt from "bcrypt";
 
 const handler = NextAuth({
   providers: [
@@ -24,7 +25,8 @@ const handler = NextAuth({
         const user = await usersCollection.findOne({ email });
         if (!user) return null;
 
-        if (password !== user.password) return null;
+        const isPasswordValid = await bcrypt.compare(password, user.password);
+        if (!isPasswordValid) return null;
 
         return {
           id: user._id.toString(),
