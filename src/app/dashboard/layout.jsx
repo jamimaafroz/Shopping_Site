@@ -3,81 +3,124 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { useSession, signOut } from "next-auth/react";
-import { HiMenu, HiX } from "react-icons/hi";
+import { HiMenu, HiX, HiHome, HiUser, HiShieldCheck } from "react-icons/hi";
+import { FiLogOut } from "react-icons/fi";
 
 export default function DashboardLayout({ children }) {
   const { data: session } = useSession();
-  const [isOpen, setIsOpen] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const menuItems = [
-    { label: "Home", href: "/" },
+    { label: "Overview", href: "/", icon: HiHome },
     ...(session?.user?.role === "admin"
-      ? [{ label: "Admin Panel", href: "/dashboard/admin" }]
+      ? [
+          {
+            label: "Admin Panel",
+            href: "/dashboard/admin",
+            icon: HiShieldCheck,
+          },
+        ]
       : []),
-    { label: "User Page", href: "/dashboard/user" },
+    { label: "User Profile", href: "/dashboard/user", icon: HiUser },
+    { label: "Profile", href: "/dashboard/profile", icon: HiUser },
   ];
 
-  return (
-    <div className="flex min-h-screen bg-gray-900 text-gray-100">
-      {/* Mobile Hamburger */}
-      <div className="lg:hidden fixed top-4 left-4 z-50">
+  const handleSignOut = async () => {
+    await signOut({ callbackUrl: "/" });
+  };
+
+  const Sidebar = () => (
+    <div
+      className={`fixed z-30 inset-y-0 left-0 transform ${
+        isSidebarOpen ? "translate-x-0" : "-translate-x-full"
+      } lg:translate-x-0 transition duration-300 ease-in-out 
+      bg-[#1f1b16] text-[#e6e0d0] w-64 space-y-6 py-7 px-3 shadow-lg`}
+    >
+      <div className="flex items-center justify-between px-4">
+        <Link href="/" className="text-xl font-semibold text-[#c8a37e]">
+          Dashboard
+        </Link>
         <button
-          onClick={() => setIsOpen(!isOpen)}
-          className="p-2 bg-[#9B563F] text-white rounded-md shadow-md hover:bg-[#7a412f] focus:outline-none"
+          className="lg:hidden p-2 text-[#c8a37e]"
+          onClick={() => setIsSidebarOpen(false)}
         >
-          {isOpen ? (
-            <HiX className="text-2xl" />
-          ) : (
-            <HiMenu className="text-2xl" />
-          )}
+          <HiX className="h-6 w-6" />
         </button>
       </div>
 
-      {/* Sidebar */}
-      <aside
-        className={`fixed top-0 left-0 h-screen w-64 bg-gray-900 shadow-lg z-40 transform
-          ${isOpen ? "translate-x-0" : "-translate-x-full"} 
-          transition-transform duration-300 lg:translate-x-0 lg:flex lg:flex-col`}
-      >
-        {/* Brand */}
-        <div className="p-6 border-b border-gray-700">
-          <h2 className="text-2xl font-bold text-[#9B563F]">Dashboard</h2>
-        </div>
-
-        {/* Navigation */}
-        <nav className="flex-1 flex flex-col mt-6 gap-2 px-4">
-          {menuItems.map((item) => (
-            <Link key={item.href} href={item.href}>
-              <span className="block text-gray-300 hover:text-white hover:bg-[#9B563F] transition-all px-4 py-3 rounded-lg font-medium shadow-sm">
-                {item.label}
-              </span>
-            </Link>
-          ))}
-        </nav>
-
-        {/* Logout */}
-        <div className="p-6">
-          <button
-            onClick={() => signOut({ callbackUrl: "/" })}
-            className="w-full bg-[#9B563F] hover:bg-[#7a412f] transition-colors px-4 py-3 rounded-lg font-semibold shadow-lg"
+      <nav className="mt-8 space-y-1">
+        {menuItems.map((item) => (
+          <Link
+            key={item.label}
+            href={item.href}
+            className="flex items-center space-x-3 py-2 px-4 rounded-md hover:bg-[#2b2520] transition"
+            onClick={() => setIsSidebarOpen(false)}
           >
-            Logout
-          </button>
-        </div>
-      </aside>
+            <item.icon className="h-5 w-5 text-[#b89267]" />
+            <span>{item.label}</span>
+          </Link>
+        ))}
+      </nav>
 
-      {/* Overlay for Mobile */}
-      {isOpen && (
-        <div
-          onClick={() => setIsOpen(false)}
-          className="fixed inset-0 bg-black bg-opacity-50 z-30 lg:hidden"
-        ></div>
-      )}
+      <div className="absolute bottom-0 w-full p-4 border-t border-[#2e2924]">
+        {session?.user && (
+          <div className="text-sm mb-3">
+            <p className="font-medium truncate">{session.user.email}</p>
+            <p className="text-xs text-[#b89267] capitalize">
+              {session.user.role}
+            </p>
+          </div>
+        )}
+        <button
+          onClick={handleSignOut}
+          className="flex items-center space-x-2 w-full py-2 px-4 bg-[#a6794f] hover:bg-[#8d6a43] text-white rounded-md transition"
+        >
+          <FiLogOut className="h-5 w-5" />
+          <span>Sign Out</span>
+        </button>
+      </div>
+    </div>
+  );
 
-      {/* Main Content */}
-      <main className="flex-1 p-6 lg:ml-64 bg-gray-800 text-gray-100 transition-all duration-300">
+  const Content = () => (
+    <div className="flex-1 p-5 lg:p-10 bg-[#f9f9f7] text-[#4b3b2a]">
+      <header className="mb-6 border-b border-[#d8cbb8] pb-4">
+        <h1 className="text-3xl font-bold text-[#7a5c3a]">
+          Welcome
+          {session?.user?.name ? `, ${session.user.name.split(" ")[0]}` : ""}!
+        </h1>
+        <p className="text-[#a67c52] text-sm">
+          Manage your account and view data.
+        </p>
+      </header>
+
+      <main className="bg-white border border-[#e0d6c8] rounded-lg p-6 min-h-[75vh] shadow-md">
         {children}
       </main>
+    </div>
+  );
+
+  return (
+    <div className="flex min-h-screen bg-[#14110e]">
+      <button
+        className="lg:hidden fixed top-4 left-4 z-40 p-2 bg-[#a6794f] text-white rounded-md"
+        onClick={() => setIsSidebarOpen(true)}
+      >
+        <HiMenu className="h-6 w-6" />
+      </button>
+
+      <Sidebar />
+
+      <div className="flex-1 lg:ml-64 pt-16 lg:pt-0">
+        <Content />
+      </div>
+
+      {isSidebarOpen && (
+        <div
+          className="fixed inset-0 z-20 bg-black opacity-40 lg:hidden"
+          onClick={() => setIsSidebarOpen(false)}
+        ></div>
+      )}
     </div>
   );
 }

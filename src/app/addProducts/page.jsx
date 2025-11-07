@@ -31,7 +31,7 @@ export default function AddProducts() {
     }
 
     if (!session) {
-      toast.error(<span>❌ Please log in to add products.</span>);
+      toast.error(<span> Please log in to add products.</span>);
       return;
     }
 
@@ -59,11 +59,11 @@ export default function AddProducts() {
           stock: "",
         });
       } else {
-        toast.error(`❌ Error: ${data.error}`);
+        toast.error(`Error: ${data.error}`);
       }
     } catch (error) {
       toast.dismiss(loadingToast);
-      toast.error("❌ Failed to add product.");
+      toast.error("Failed to add product.");
       console.error("Error:", error);
     } finally {
       setSubmitting(false);
@@ -72,76 +72,90 @@ export default function AddProducts() {
 
   return (
     <>
-      <Toaster position="top-right" /> {/* Required for toasts */}
-      <div className="max-w-md mx-auto p-6 bg-gray-900 text-white rounded-xl shadow-xl">
-        <h1 className="text-3xl font-semibold mb-6 text-center text-blue-400">
-          Add New Product
-        </h1>
+      <Toaster position="top-right" />
+      <div className="min-h-screen bg-gradient-to-br from-[#1a120b] via-[#2c1810] to-[#0f0a06] text-white flex flex-col items-center justify-center px-6 py-12">
+        <div className="w-full max-w-2xl">
+          <h1 className="text-4xl font-bold mb-10 text-center text-[#d7b899] tracking-wide">
+            Add New Product
+          </h1>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <input
-            type="text"
-            name="name"
-            placeholder="Product Name"
-            value={form.name}
-            onChange={handleChange}
-            className="w-full p-3 rounded bg-gray-800 border border-gray-700 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-            required
-          />
-          <input
-            type="text"
-            name="category"
-            placeholder="Category"
-            value={form.category}
-            onChange={handleChange}
-            className="w-full p-3 rounded bg-gray-800 border border-gray-700 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-            required
-          />
-          <input
-            type="number"
-            name="price"
-            placeholder="Price"
-            value={form.price}
-            onChange={handleChange}
-            className="w-full p-3 rounded bg-gray-800 border border-gray-700 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-            required
-          />
-          <textarea
-            name="description"
-            placeholder="Description"
-            value={form.description}
-            onChange={handleChange}
-            className="w-full p-3 rounded bg-gray-800 border border-gray-700 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-            required
-          />
-          <input
-            type="text"
-            name="image"
-            placeholder="Image URL"
-            value={form.image}
-            onChange={handleChange}
-            className="w-full p-3 rounded bg-gray-800 border border-gray-700 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-          />
-          <input
-            type="number"
-            name="stock"
-            placeholder="Stock"
-            value={form.stock}
-            onChange={handleChange}
-            className="w-full p-3 rounded bg-gray-800 border border-gray-700 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-          />
-          <button
-            type="submit"
-            disabled={submitting}
-            className={`w-full p-3 rounded-lg font-medium ${
-              submitting
-                ? "bg-gray-600 cursor-not-allowed"
-                : "bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700"
-            }`}
+          <form
+            onSubmit={handleSubmit}
+            className="space-y-6 bg-[#1c1a17]/70 backdrop-blur-md p-10 rounded-2xl border border-[#3d3025] shadow-[0_0_30px_rgba(0,0,0,0.4)]"
           >
-            {submitting ? "Adding..." : "Add Product"}
-          </button>
-        </form>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <input
+                type="text"
+                name="name"
+                placeholder="Product Name"
+                value={form.name}
+                onChange={handleChange}
+                className="p-3 rounded bg-[#2a231d] border border-[#4a3c2e] focus:border-[#b89267] focus:ring-1 focus:ring-[#b89267] outline-none"
+                required
+              />
+              <input
+                type="text"
+                name="category"
+                placeholder="Category"
+                value={form.category}
+                onChange={handleChange}
+                className="p-3 rounded bg-[#2a231d] border border-[#4a3c2e] focus:border-[#b89267] focus:ring-1 focus:ring-[#b89267] outline-none"
+                required
+              />
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <input
+                type="number"
+                name="price"
+                placeholder="Price"
+                value={form.price}
+                onChange={handleChange}
+                className="p-3 rounded bg-[#2a231d] border border-[#4a3c2e] focus:border-[#b89267] focus:ring-1 focus:ring-[#b89267] outline-none"
+                required
+              />
+              <input
+                type="number"
+                name="stock"
+                placeholder="Stock"
+                value={form.stock}
+                onChange={handleChange}
+                className="p-3 rounded bg-[#2a231d] border border-[#4a3c2e] focus:border-[#b89267] focus:ring-1 focus:ring-[#b89267] outline-none"
+              />
+            </div>
+
+            <textarea
+              name="description"
+              placeholder="Description"
+              value={form.description}
+              onChange={handleChange}
+              className="w-full p-3 rounded bg-[#2a231d] border border-[#4a3c2e] focus:border-[#b89267] focus:ring-1 focus:ring-[#b89267] outline-none"
+              rows="4"
+              required
+            />
+
+            <input
+              type="text"
+              name="image"
+              placeholder="Image URL"
+              value={form.image}
+              onChange={handleChange}
+              className="w-full p-3 rounded bg-[#2a231d] border border-[#4a3c2e] focus:border-[#b89267] focus:ring-1 focus:ring-[#b89267] outline-none"
+            />
+
+            <button
+              type="submit"
+              disabled={submitting}
+              className={`w-full cursor-pointer p-3 rounded-lg font-semibold ${
+                submitting
+                  ? "bg-[#3a2c1f] cursor-not-allowed text-[#cbb497]"
+                  : "bg-[#b89267]  hover:from-[#c8a37e] hover:to-[#a6794f]]"
+              }`}
+            >
+              {submitting ? "Adding..." : "Add Product"}
+            </button>
+          </form>
+        </div>
       </div>
     </>
   );

@@ -6,7 +6,7 @@ export default function useProducts() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    let isMounted = true; // prevent state update if unmounted
+    let isMounted = true;
     const fetchProducts = async () => {
       try {
         const res = await fetch("/api/products");

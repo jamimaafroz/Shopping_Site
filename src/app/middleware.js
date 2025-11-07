@@ -9,7 +9,6 @@ export async function middleware(req) {
 
   const { pathname } = req.nextUrl;
 
-  // Allow public paths
   if (
     pathname.startsWith("/_next") ||
     pathname.startsWith("/api") ||
@@ -18,12 +17,10 @@ export async function middleware(req) {
     return NextResponse.next();
   }
 
-  // Protect dashboard
   if (pathname.startsWith("/dashboard") && !token) {
     return NextResponse.redirect(new URL("/login", req.url));
   }
 
-  // Protect admin pages
   if (
     pathname.startsWith("/dashboard/admin") &&
     token?.user?.role !== "admin"
@@ -35,5 +32,5 @@ export async function middleware(req) {
 }
 
 export const config = {
-  matcher: ["/dashboard/:path*"], // applies to all dashboard routes
+  matcher: ["/dashboard/:path*"],
 };

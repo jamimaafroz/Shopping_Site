@@ -21,7 +21,6 @@ const handler = NextAuth({
         if (!email || !password) return null;
 
         const usersCollection = await dbConnect(collectionObj.userCollection);
-
         const user = await usersCollection.findOne({ email });
         if (!user) return null;
 
@@ -32,20 +31,31 @@ const handler = NextAuth({
           id: user._id.toString(),
           name: user.name,
           email: user.email,
+          role: user.role || "user",
         };
       },
     }),
   ],
+
   session: { strategy: "jwt" },
+
   callbacks: {
-    async jwt({ user, token }) {
-      if (user) token.user = user;
+    async jwt({ token, user }) {
+      if (user) {
+        token.user = user;
+      }
       return token;
     },
     async session({ session, token }) {
-      if (token?.user) session.user = token.user;
+      if (token?.user) {
+        session.user = token.user;
+      }
       return session;
     },
+  },
+
+  pages: {
+    signIn: "/login",
   },
 });
 
