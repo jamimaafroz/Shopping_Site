@@ -1,64 +1,90 @@
 "use client";
 import React, { useState } from "react";
-import { signIn } from "next-auth/react";
+import { signIn, getSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import toast, { Toaster } from "react-hot-toast";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
-  const router = useRouter();
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    setLoading(true);
 
-    const result = await signIn("credentials", {
-      redirect: false,
-      email,
-      password,
-      callbackUrl: "/",
-    });
-    if (result.ok) {
-      router.push(result.url);
-    } else {
-      alert("Login failed!");
+    try {
+      const result = await signIn("credentials", {
+        redirect: false,
+        email,
+        password,
+      });
+
+      if (result?.ok) {
+        toast.success("Welcome back!");
+
+        // --- ROLE-BASED REDIRECT LOGIC ---
+        // Fetch the session manually to check the role immediately
+        const session = await getSession();
+        const role = session?.user?.role;
+
+        if (role === "admin") {
+          router.push("/dashboard"); // Admins go to the admin panel
+        } else if (role === "seller") {
+          router.push("/"); // Sellers go to home (or a seller dashboard)
+        } else {
+          router.push("/"); // Default users go to home
+        }
+      } else {
+        toast.error("Invalid email or password!");
+      }
+    } catch (error) {
+      toast.error("Something went wrong. Please try again.");
+      console.error("Login Error:", error);
+    } finally {
+      setLoading(false);
     }
-
-    console.log("Login result:", result);
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-900 px-4">
-      {/* Login Card */}
-      <div className="bg-gray-800 shadow-lg rounded-xl w-full max-w-md p-8">
-        <h1 className="text-3xl font-bold text-center mb-6 text-white">
-          Login
-        </h1>
+    <div className="min-h-screen flex items-center justify-center bg-[#0D0D0D] px-4">
+      <Toaster position="top-center" />
 
-        <form onSubmit={handleLogin}>
+      {/* Login Card */}
+      <div className="bg-[#1A1A1A] border border-gray-800 shadow-2xl rounded-3xl w-full max-w-md p-10">
+        <div className="text-center mb-8">
+          <h1 className="text-4xl font-extrabold text-white mb-2">Welcome</h1>
+          <p className="text-gray-500 text-sm">
+            Login to your ShopEase account
+          </p>
+        </div>
+
+        <form onSubmit={handleLogin} className="space-y-6">
           {/* Email */}
-          <div className="mb-4">
+          <div>
             <label
-              className="block text-gray-300 font-medium mb-2"
+              className="block text-gray-400 text-sm font-medium mb-2 ml-1"
               htmlFor="email"
             >
-              Email
+              Email Address
             </label>
             <input
               type="email"
               id="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="Enter your email"
-              className="w-full px-4 py-2 bg-gray-700 text-white border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#9B563F] focus:border-[#9B563F] transition"
+              placeholder="name@example.com"
+              className="w-full px-5 py-3 bg-[#111] text-white border border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#9B563F] focus:border-[#9B563F] transition-all outline-none"
               required
             />
           </div>
 
           {/* Password */}
-          <div className="mb-6">
+          <div>
             <label
-              className="block text-gray-300 font-medium mb-2"
+              className="block text-gray-400 text-sm font-medium mb-2 ml-1"
               htmlFor="password"
             >
               Password
@@ -68,8 +94,8 @@ const LoginPage = () => {
               id="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              placeholder="Enter your password"
-              className="w-full px-4 py-2 bg-gray-700 text-white border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#9B563F] focus:border-[#9B563F] transition"
+              placeholder="••••••••"
+              className="w-full px-5 py-3 bg-[#111] text-white border border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#9B563F] focus:border-[#9B563F] transition-all outline-none"
               required
             />
           </div>
@@ -77,22 +103,26 @@ const LoginPage = () => {
           {/* Login Button */}
           <button
             type="submit"
-            className="w-full bg-green-500 hover:bg-green-600 text-white font-light py-2 rounded-lg transition"
+            disabled={loading}
+            className="w-full bg-[#9B563F] hover:bg-[#7a4332] text-white font-bold py-4 rounded-xl transition-all transform active:scale-[0.98] shadow-lg shadow-[#9B563F]/20 disabled:opacity-50"
           >
-            Login
+            {loading ? "Authenticating..." : "Login"}
           </button>
         </form>
 
         {/* Additional Links */}
-        <div className="mt-4 flex justify-between text-sm text-gray-400">
-          <a href="#" className="hover:text-[#9B563F] transition">
+        <div className="mt-8 flex flex-col items-center gap-4 text-sm">
+          <a href="#" className="text-gray-500 hover:text-[#9B563F] transition">
             Forgot Password?
           </a>
-          <Link href="/Register">
-            <p className="hover:text-[#9B563F] transition cursor-pointer">
-              Sign Up
-            </p>
-          </Link>
+          <div className="text-gray-500">
+            Don't have an account?{" "}
+            <Link href="/Register">
+              <span className="text-[#9B563F] font-bold hover:underline cursor-pointer">
+                Sign Up
+              </span>
+            </Link>
+          </div>
         </div>
       </div>
     </div>

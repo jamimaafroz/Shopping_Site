@@ -73,16 +73,21 @@ export default function AddProducts() {
   return (
     <>
       <Toaster position="top-right" />
-      <div className="min-h-screen bg-gradient-to-br from-[#1a120b] via-[#2c1810] to-[#0f0a06] text-white flex flex-col items-center justify-center px-6 py-12">
-        <div className="w-full max-w-2xl">
-          <h1 className="text-4xl font-bold mb-10 text-center text-[#d7b899] tracking-wide">
-            Add New Product
-          </h1>
+      <div className="min-h-screen bg-black text-white px-6 py-12 flex justify-center">
+        <div className="w-full max-w-3xl">
+          {/* Title */}
+          <div className="mb-10">
+            <h1 className="text-3xl font-semibold text-[#ffffff]">
+              Add Product
+            </h1>
+            <p className="text-sm text-gray-400 mt-1">
+              Fill in the details to add a new product
+            </p>
+          </div>
 
-          <form
-            onSubmit={handleSubmit}
-            className="space-y-6 bg-[#1c1a17]/70 backdrop-blur-md p-10 rounded-2xl border border-[#3d3025] shadow-[0_0_30px_rgba(0,0,0,0.4)]"
-          >
+          {/* Form */}
+          <form onSubmit={handleSubmit} className="space-y-6">
+            {/* Row 1 */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <input
                 type="text"
@@ -90,7 +95,7 @@ export default function AddProducts() {
                 placeholder="Product Name"
                 value={form.name}
                 onChange={handleChange}
-                className="p-3 rounded bg-[#2a231d] border border-[#4a3c2e] focus:border-[#b89267] focus:ring-1 focus:ring-[#b89267] outline-none"
+                className="w-full bg-[#111] border-b border-[#333] focus:border-[#5a2c1d] outline-none p-2 transition"
                 required
               />
               <input
@@ -99,11 +104,11 @@ export default function AddProducts() {
                 placeholder="Category"
                 value={form.category}
                 onChange={handleChange}
-                className="p-3 rounded bg-[#2a231d] border border-[#4a3c2e] focus:border-[#b89267] focus:ring-1 focus:ring-[#b89267] outline-none"
+                className="w-full bg-[#111] border-b border-[#333] focus:border-[#5a2c1d] outline-none p-2 transition"
                 required
               />
             </div>
-
+            {/* Row 2 */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <input
                 type="number"
@@ -111,7 +116,7 @@ export default function AddProducts() {
                 placeholder="Price"
                 value={form.price}
                 onChange={handleChange}
-                className="p-3 rounded bg-[#2a231d] border border-[#4a3c2e] focus:border-[#b89267] focus:ring-1 focus:ring-[#b89267] outline-none"
+                className="w-full bg-[#111] border-b border-[#333] focus:border-[#5a2c1d] outline-none p-2 transition"
                 required
               />
               <input
@@ -120,40 +125,43 @@ export default function AddProducts() {
                 placeholder="Stock"
                 value={form.stock}
                 onChange={handleChange}
-                className="p-3 rounded bg-[#2a231d] border border-[#4a3c2e] focus:border-[#b89267] focus:ring-1 focus:ring-[#b89267] outline-none"
+                className="w-full bg-[#111] border-b border-[#333] focus:border-[#5a2c1d] outline-none p-2 transition"
               />
             </div>
-
+            {/* Description */}
             <textarea
               name="description"
               placeholder="Description"
               value={form.description}
               onChange={handleChange}
-              className="w-full p-3 rounded bg-[#2a231d] border border-[#4a3c2e] focus:border-[#b89267] focus:ring-1 focus:ring-[#b89267] outline-none"
               rows="4"
+              className="w-full bg-[#111] border-b border-[#333] focus:border-[#5a2c1d] outline-none p-2 transition"
               required
             />
-
+            {/* Image */}
             <input
               type="text"
               name="image"
               placeholder="Image URL"
               value={form.image}
               onChange={handleChange}
-              className="w-full p-3 rounded bg-[#2a231d] border border-[#4a3c2e] focus:border-[#b89267] focus:ring-1 focus:ring-[#b89267] outline-none"
+              className="w-full bg-[#111] border-b border-[#333] focus:border-[#5a2c1d] outline-none p-2 transition"
             />
-
-            <button
-              type="submit"
-              disabled={submitting}
-              className={`w-full cursor-pointer p-3 rounded-lg font-semibold ${
-                submitting
-                  ? "bg-[#3a2c1f] cursor-not-allowed text-[#cbb497]"
-                  : "bg-[#b89267]  hover:from-[#c8a37e] hover:to-[#a6794f]]"
-              }`}
-            >
-              {submitting ? "Adding..." : "Add Product"}
-            </button>
+            {/* Button */}
+            <div className="pt-4">
+              <button
+                type="submit"
+                disabled={submitting}
+                className={`w-full py-3 font-medium transition ${
+                  submitting
+                    ? "bg-[#1a1a1a] text-gray-500 cursor-not-allowed"
+                    : "bg-[#5a2c1d] hover:bg-[#6b3423] text-white"
+                }`}
+              >
+                {submitting ? "Adding..." : "Add Product"}
+              </button>
+            </div>
+            s
           </form>
         </div>
       </div>

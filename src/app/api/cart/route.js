@@ -19,7 +19,7 @@ export async function POST(req) {
 
   if (existingCart) {
     const index = existingCart.items.findIndex(
-      (item) => item.productId === product._id
+      (item) => item.productId === product._id,
     );
 
     if (index > -1) {
@@ -36,7 +36,7 @@ export async function POST(req) {
 
     await cartCollection.updateOne(
       { userId },
-      { $set: { items: existingCart.items } }
+      { $set: { items: existingCart.items } },
     );
   } else {
     await cartCollection.insertOne({
@@ -72,7 +72,7 @@ export async function DELETE(req) {
     });
 
   const updatedItems = cart.items.filter(
-    (item) => item.productId !== productId
+    (item) => item.productId !== productId,
   );
   await cartCollection.updateOne({ userId }, { $set: { items: updatedItems } });
 

@@ -11,6 +11,7 @@ import {
   FaUser,
   FaPlus,
   FaHome,
+  FaColumns,
 } from "react-icons/fa";
 import { IoSearch } from "react-icons/io5";
 import { BsCart } from "react-icons/bs";
@@ -51,9 +52,18 @@ export default function Navbar() {
     </>
   );
 
-  // Mobile links
+  // Mobile links logic
   const mobileLinks = (
     <>
+      {/* Logged In User Info (Mobile) */}
+      {mounted && session && (
+        <li className="border-b border-gray-100 mb-2 pb-2">
+          <div className="flex items-center gap-2 font-bold text-[#9B563F]">
+            <FaUser /> {session.user.name}
+          </div>
+        </li>
+      )}
+
       <li>
         <Link
           href="/"
@@ -71,30 +81,67 @@ export default function Navbar() {
         </Link>
       </li>
       <li>
+        {/* Changed from /deals to /productCards */}
         <Link
-          href="/deals"
+          href="/productCards"
           className="flex items-center gap-2 text-black hover:text-[#9B563F] transition"
         >
           <FaTags /> Deals
         </Link>
       </li>
+
+      {mounted && session && (
+        <>
+          <li>
+            <Link
+              href="/dashboard"
+              className="flex items-center gap-2 text-black hover:text-[#9B563F] transition"
+            >
+              <FaColumns /> Dashboard
+            </Link>
+          </li>
+          <li>
+            <Link
+              href="/profile"
+              className="flex items-center gap-2 text-black hover:text-[#9B563F] transition"
+            >
+              <FaUser /> Profile
+            </Link>
+          </li>
+        </>
+      )}
+
       <li tabIndex={0}>
         <a className="flex items-center gap-2 justify-between text-black hover:text-[#9B563F] transition">
-          <FaAppleAlt /> Categories
-          <span className="ml-2">&#x25BE;</span>
+          <div className="flex items-center gap-2">
+            <FaAppleAlt /> Categories
+          </div>
+          <span>&#x25BE;</span>
         </a>
-        <ul className="p-2 bg-white rounded-box shadow">{categories}</ul>
+        <ul className="p-2 bg-white rounded-box shadow-inner">{categories}</ul>
       </li>
+
       <li>
-        <a className="flex items-center gap-2 text-black hover:text-[#9B563F] transition">
-          <FaRegHeart /> Wishlist
-        </a>
+        <Link
+          href="/wishlist"
+          className="flex items-center justify-between text-black hover:text-[#9B563F] transition"
+        >
+          <div className="flex items-center gap-2">
+            <FaRegHeart /> Wishlist
+          </div>
+          {mounted && wishlists.length > 0 && (
+            <span className="bg-red-500 text-white text-[10px] px-2 py-0.5 rounded-full">
+              {wishlists.length}
+            </span>
+          )}
+        </Link>
       </li>
+
       {mounted && session && (
         <li>
           <button
             onClick={() => signOut({ callbackUrl: "/" })}
-            className="flex items-center gap-2 text-red-500 hover:text-red-600 transition"
+            className="flex items-center gap-2 text-red-500 hover:text-red-600 transition mt-2 border-t pt-2"
           >
             Logout
           </button>
@@ -104,9 +151,9 @@ export default function Navbar() {
   );
 
   return (
-    <div className="navbar bg-white shadow-md px-4 md:px-8 justify-between">
+    <div className="navbar bg-white shadow-md px-4 md:px-8 justify-between sticky top-0 z-[100]">
       {/* Navbar Start */}
-      <div className="flex items-center navbar-start space-x-2 lg:space-x-4">
+      <div className="flex items-center navbar-start">
         <div className="w-28 sm:w-32 md:w-36 lg:w-40">
           <ShopEaseLogo />
         </div>
@@ -117,25 +164,25 @@ export default function Navbar() {
         <ul className="menu menu-horizontal px-1 gap-4">
           <li>
             <Link href="/">
-              <p className="text-black hover:text-[#9B563F] cursor-pointer transition">
-                Home
-              </p>
+              <p className="text-black hover:text-[#9B563F] transition">Home</p>
             </Link>
           </li>
+          {/* Changed from /deals to /productCards */}
           <li>
-            <Link href="/deals">
-              <p className="text-black hover:text-[#9B563F] cursor-pointer transition">
+            <Link href="/productCards">
+              <p className="text-black hover:text-[#9B563F] transition">
                 Deals
               </p>
             </Link>
           </li>
           <li>
             <Link href="/addProducts">
-              <p className="text-black hover:text-[#9B563F] cursor-pointer transition">
+              <p className="text-black hover:text-[#9B563F] transition">
                 Add Product
               </p>
             </Link>
           </li>
+
           <li>
             <div className="dropdown dropdown-hover">
               <label
@@ -149,20 +196,15 @@ export default function Navbar() {
               </ul>
             </div>
           </li>
-          <li>
-            <p className="text-black hover:text-[#9B563F] cursor-pointer transition">
-              About Us
-            </p>
-          </li>
 
-          {/* Account Dropdown */}
+          {/* Account Dropdown Desktop */}
           {mounted && session && (
             <li>
               <div className="dropdown dropdown-end">
                 <label
                   tabIndex={0}
                   role="button"
-                  className=" flex items-center gap-2"
+                  className="flex items-center gap-2 text-[#9B563F] font-medium"
                 >
                   <FaUser /> {session.user.name}
                 </label>
@@ -171,25 +213,19 @@ export default function Navbar() {
                   className="dropdown-content menu bg-base-100 rounded-box z-[50] w-52 p-2 shadow-md"
                 >
                   <li>
-                    <Link
-                      href="/dashboard"
-                      className="block px-4 py-2 hover:text-[#9B563F]"
-                    >
+                    <Link href="/dashboard" className="hover:text-[#9B563F]">
                       Dashboard
                     </Link>
                   </li>
                   <li>
-                    <Link
-                      href="/profile"
-                      className="block px-4 py-2 hover:text-[#9B563F]"
-                    >
+                    <Link href="/profile" className="hover:text-[#9B563F]">
                       Update Profile
                     </Link>
                   </li>
                   <li>
                     <button
                       onClick={() => signOut({ callbackUrl: "/" })}
-                      className="block w-full text-left px-4 py-2 text-red-500 hover:text-red-600"
+                      className="text-red-500 hover:text-red-600"
                     >
                       Logout
                     </button>
@@ -202,34 +238,40 @@ export default function Navbar() {
       </div>
 
       {/* Navbar End */}
-      <div className="navbar-end flex items-center gap-4 text-xl md:text-2xl">
-        <IoSearch className="text-[#9B563F] cursor-pointer transition" />
-        <div className="relative cursor-pointer">
+      <div className="navbar-end flex items-center gap-3 md:gap-4 text-xl md:text-2xl">
+        <IoSearch className="text-[#9B563F] cursor-pointer" />
+
+        {/* Wishlist Icon (Desktop Only - hidden on small mobile to save space since it's in menu) */}
+        <Link
+          href="/wishlist"
+          className="relative cursor-pointer hidden sm:block"
+        >
           <FaRegHeart className="text-[#9B563F]" />
-          {!loading && wishlists.length > 0 && (
-            <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
+          {mounted && wishlists.length > 0 && (
+            <span className="absolute -top-2 -right-2 bg-red-500 text-white text-[10px] w-5 h-5 flex items-center justify-center rounded-full">
               {wishlists.length}
             </span>
           )}
-        </div>
+        </Link>
 
-        <div className="relative cursor-pointer">
-          <BsCart className="text-[#9B563F] cursor-pointer transition" />
-          {!cartLoading && count > 0 && (
-            <span className="absolute -top-2 -right-2 bg-green-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
+        {/* Cart Icon */}
+        <Link href="/cart" className="relative cursor-pointer">
+          <BsCart className="text-[#9B563F]" />
+          {mounted && count > 0 && (
+            <span className="absolute -top-2 -right-2 bg-green-500 text-white text-[10px] w-5 h-5 flex items-center justify-center rounded-full">
               {count}
             </span>
           )}
-        </div>
+        </Link>
 
-        {/* Mobile Dropdown */}
+        {/* Mobile Dropdown Menu */}
         <div className="dropdown lg:hidden">
-          <label tabIndex={0} className="btn btn-ghost p-2">
-            <HiOutlineMenu className="text-green-600 text-2xl" />
+          <label tabIndex={0} className="btn btn-ghost btn-circle">
+            <HiOutlineMenu className="text-[#9B563F] text-2xl" />
           </label>
           <ul
             tabIndex={0}
-            className="menu menu-sm dropdown-content bg-white rounded-box z-[50] mt-3 w-56 p-2 shadow-md right-0"
+            className="menu menu-sm dropdown-content bg-white rounded-box z-[50] mt-3 w-64 p-3 shadow-xl right-0 border border-gray-100"
           >
             {mobileLinks}
           </ul>
