@@ -99,7 +99,7 @@ export default function Products() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {displayedProducts.map((product) => (
             <Link
-              href={`/products/${product._id}`}
+              href={`/productDetails/${product._id}`}
               key={product._id}
               className="group"
             >
